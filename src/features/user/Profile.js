@@ -11,6 +11,7 @@ function Profile({ profile }) {
 
   return (
     <Grid container spacing={3}>
+      {/* This grid item contains the information in the left column */}
       <Grid item xs={12} md={4}>
         <Stack spacing={3}>
           <ProfileScorecard profile={profile} />
@@ -19,6 +20,10 @@ function Profile({ profile }) {
         </Stack>
       </Grid>
 
+      {/* This section lets users to create posts & post them 
+      When other users access someone's profile,
+        They neither create posts nor switch between tabs 
+        They only see that person's posts and the information in the left column */}
       <Grid item xs={12} md={8}>
         <Stack spacing={3}>
           {user._id === profile._id && <PostForm />}

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
+import { cloudinaryUpload } from "../../utils/cloudinary";
 
 const initialState = {
   isLoading: false,
@@ -47,6 +48,10 @@ const slice = createSlice({
       const { postId, reactions } = action.payload;
       state.postsById[postId].reactions = reactions;
     },
+    resetPosts(state) {
+      state.postsById = {};
+      state.currentPagePosts = [];
+    },
   },
 });
 
@@ -55,7 +60,12 @@ export const createPost =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.post("/posts", { content, image });
+      // Upload image to cloudinary
+      const imageUrl = await cloudinaryUpload(image);
+      const response = await apiService.post("/posts", {
+        content,
+        image: imageUrl,
+      });
       dispatch(slice.actions.createPostSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -70,6 +80,7 @@ export const getPosts =
       const response = await apiService.get(
         `/posts/user/${userId}?page=${page}&limit=${limit}`
       );
+      if (page === 1) dispatch(slice.actions.resetPosts());
       dispatch(slice.actions.getPostSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));

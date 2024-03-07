@@ -56,7 +56,7 @@ function PostCard({ post }) {
             sx={{
               borderRadius: 2,
               overflow: "hidden",
-              height: 300,
+              height: "100%",
               "& img": { objectFit: "cover", width: 1, height: 1 },
             }}
           >

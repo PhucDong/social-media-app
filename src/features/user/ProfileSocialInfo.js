@@ -1,4 +1,4 @@
-import { Card, CardHeader, Link, Stack } from "@mui/material";
+import { Card, CardHeader, Stack, Link } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -54,7 +54,13 @@ function ProfileSocialInfo({ profile }) {
         {SOCIALS.map((link) => (
           <Stack key={link.name} direction="row" alignItems="center">
             {link.icon}
-            <Link component="span" variant="body2" color="text.primary" noWrap>
+            <Link
+              href={`https://${link.href}`}
+              target="_blank"
+              variant="body2"
+              color="text.primary"
+              noWrap
+            >
               {link.href}
             </Link>
           </Stack>
