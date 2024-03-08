@@ -86,6 +86,7 @@ function HomePage() {
         </TabsWrapperStyle>
       </Card>
 
+      {/* Displaying sections that associate with each tab */}
       {PROFILE_TABS.map((tab) => {
         const isMatched = tab.value === currentTab;
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;

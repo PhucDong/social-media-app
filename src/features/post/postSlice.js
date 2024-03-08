@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
 import { cloudinaryUpload } from "../../utils/cloudinary";
+import { toast } from "react-toastify";
 
 const initialState = {
   isLoading: false,
@@ -51,6 +52,12 @@ const slice = createSlice({
     resetPosts(state) {
       state.postsById = {};
       state.currentPagePosts = [];
+    },
+    deletePostSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.currentPagePosts.filter((postId) => postId !== action.payload._id);
+      // state.currentPagePosts.map(postId => postId === state.postsById[postId] && state.postsById[postId] =  )
     },
   },
 });
@@ -107,5 +114,18 @@ export const sendPostReaction =
       dispatch(slice.actions.hasError(error.message));
     }
   };
+
+export const deletePost = (postId) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.delete(`/posts/${postId}`);
+    console.log(122, response.data);
+    dispatch(slice.actions.deletePostSuccess(response.data));
+    toast.success("Post deleted successfully");
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
 
 export default slice.reducer;

@@ -21,8 +21,8 @@ function Profile({ profile }) {
       </Grid>
 
       {/* This section lets users to create posts & post them 
-      When other users access someone's profile,
-        They neither create posts nor switch between tabs 
+      When the current user accesses someone's profile,
+        They can't create posts, switch between tabs, edit, and delete someone else's posts
         They only see that person's posts and the information in the left column */}
       <Grid item xs={12} md={8}>
         <Stack spacing={3}>

@@ -5,6 +5,8 @@ import {
   CardHeader,
   IconButton,
   Link,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
@@ -14,8 +16,62 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PostReaction from "./PostReaction";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deletePost } from "./postSlice";
 
 function PostCard({ post }) {
+  const [anchorPostMenu, setAnchorPostMenu] = useState(null);
+  const dispatch = useDispatch();
+
+  const handlePostMenuClose = () => {
+    setAnchorPostMenu(null);
+  };
+
+  const handleDeletePost = (postId) => {
+    setAnchorPostMenu(null);
+    dispatch(deletePost(postId));
+  };
+
+  const handlePostMenuOpen = (event) => {
+    setAnchorPostMenu(event.currentTarget);
+  };
+
+  const postOptionsMenu = (
+    <Menu
+      id="menu-appbar"
+      anchorEl={anchorPostMenu}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={Boolean(anchorPostMenu)}
+      onClose={handlePostMenuClose}
+    >
+      <MenuItem
+        onClick={handlePostMenuClose}
+        to="/"
+        component={RouterLink}
+        sx={{ mx: 1 }}
+      >
+        Edit Post
+      </MenuItem>
+      <MenuItem
+        onClick={handleDeletePost(post._id)}
+        to="/"
+        component={RouterLink}
+        sx={{ mx: 1 }}
+      >
+        Delete Post
+      </MenuItem>
+    </Menu>
+  );
+
   return (
     <Card>
       <CardHeader
@@ -29,7 +85,7 @@ function PostCard({ post }) {
             color="text.primary"
             component={RouterLink}
             sx={{ fontWeight: 600 }}
-            to={`/user/${post.author._id}`}
+            // to={`/user/${post.author._id}`}
           >
             {post?.author?.name}
           </Link>
@@ -43,11 +99,12 @@ function PostCard({ post }) {
           </Typography>
         }
         action={
-          <IconButton>
+          <IconButton onClick={handlePostMenuOpen}>
             <MoreVertIcon sx={{ fontSize: 30 }} />
           </IconButton>
         }
       />
+      {postOptionsMenu}
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Typography>{post.content}</Typography>
