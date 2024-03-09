@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Link,
   Stack,
@@ -49,7 +49,6 @@ function LoginPage() {
 
   const onSubmit = async (data) => {
     const from = location.state?.from?.pathname || "/";
-    console.log(52, from);
     let { email, password } = data;
 
     try {
