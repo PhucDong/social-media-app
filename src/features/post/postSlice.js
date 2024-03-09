@@ -57,7 +57,6 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       state.currentPagePosts.filter((postId) => postId !== action.payload._id);
-      // state.currentPagePosts.map(postId => postId === state.postsById[postId] && state.postsById[postId] =  )
     },
   },
 });
@@ -115,17 +114,18 @@ export const sendPostReaction =
     }
   };
 
-export const deletePost = (postId) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.delete(`/posts/${postId}`);
-    console.log(122, response.data);
-    dispatch(slice.actions.deletePostSuccess(response.data));
-    toast.success("Post deleted successfully");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
+export const deletePost =
+  (postId) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/posts/${postId}`);
+      dispatch(slice.actions.deletePostSuccess(response.data));
+      toast.success("Post deleted successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;
