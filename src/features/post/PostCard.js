@@ -62,7 +62,7 @@ function PostCard({ post }) {
         Edit Post
       </MenuItem>
       <MenuItem
-        onClick={handleDeletePost(post._id)}
+        onClick={() => handleDeletePost(post._id)}
         to="/"
         component={RouterLink}
         sx={{ mx: 1 }}
