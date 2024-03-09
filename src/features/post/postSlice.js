@@ -56,6 +56,7 @@ const slice = createSlice({
     deletePostSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
+      state.deletedPost = action.payload;
       state.currentPagePosts.filter((postId) => postId !== action.payload._id);
     },
   },
