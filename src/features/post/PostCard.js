@@ -19,9 +19,11 @@ import CommentForm from "../comment/CommentForm";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deletePost } from "./postSlice";
+import PostEdit from "./PostEdit";
 
 function PostCard({ post }) {
   const [anchorPostMenu, setAnchorPostMenu] = useState(null);
+  const [openPostEdit, setOpenPostEdit] = useState(false);
   const dispatch = useDispatch();
 
   const handlePostMenuClose = () => {
@@ -35,6 +37,15 @@ function PostCard({ post }) {
 
   const handlePostMenuOpen = (event) => {
     setAnchorPostMenu(event.currentTarget);
+  };
+
+  const handleOpenPostEdit = () => {
+    setOpenPostEdit(true);
+    setAnchorPostMenu(null);
+  };
+
+  const handleClosePostEdit = () => {
+    setOpenPostEdit(false);
   };
 
   const postOptionsMenu = (
@@ -54,13 +65,16 @@ function PostCard({ post }) {
       onClose={handlePostMenuClose}
     >
       <MenuItem
-        onClick={handlePostMenuClose}
-        to="/"
-        component={RouterLink}
+        onClick={handleOpenPostEdit}
         sx={{ mx: 1 }}
       >
         Edit Post
       </MenuItem>
+      <PostEdit
+      post={post}
+        openPostEdit={openPostEdit}
+        handleClosePostEdit={handleClosePostEdit}
+      />
       <MenuItem
         onClick={() => handleDeletePost(post._id)}
         to="/"
