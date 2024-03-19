@@ -51,7 +51,7 @@ const slice = createSlice({
       state.error = null;
       state.deletedComment = action.payload;
       const { post, _id } = action.payload;
-      // delete state.commentsById[_id];
+      delete state.commentsById[_id];
       state.commentsByPost[post].filter((commentId) => commentId !== _id);
     },
   },
