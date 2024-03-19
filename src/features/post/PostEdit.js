@@ -13,10 +13,12 @@ import { FTextField, FUploadImage, FormProvider } from "../../components/form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { fDate } from "../../utils/formatTime";
 import { LoadingButton } from "@mui/lab";
+import { useDispatch } from "react-redux";
+import { updatePost } from "./postSlice";
 
 const customStyledCard = {
   position: "absolute",
@@ -32,42 +34,32 @@ const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required."),
 });
 
-const defaultValues = {
-  content: "",
-  image: "",
-  isSubmitting: false,
-};
-
 function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
-  const [postEditContent, setPostEditContent] = useState(post.content);
+  const [postEditImage, setPostEditImage] = useState(post.image);
+  const [uploadedImage, setUploadedImage] = useState("");
+  console.log(40, uploadedImage);
 
   const methods = useForm({
     resolver: yupResolver(yupSchema),
-    defaultValues,
+    values: { content: post.content, image: post.image, isSubmitting: false },
   });
 
-  const {
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    // formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit, setValue, watch } = methods;
 
   const isSubmitting = watch("isSubmitting");
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     setValue("isSubmitting", true);
-    console.log(61, data);
-  };
-
-  const handleChangePostEditContent = (event) => {
-    setPostEditContent(event.target.value);
+    data = { ...data, postId: post._id };
+    dispatch(updatePost(data));
+    handleClosePostEdit();
   };
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
+      setUploadedImage(file);
       if (file) {
         setValue(
           "image",
@@ -79,6 +71,12 @@ function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
     },
     [setValue]
   );
+
+  const handleRemovePostImage = () => {
+    setValue("image", null);
+    setPostEditImage(null);
+    setUploadedImage(null);
+  };
 
   return (
     <Modal open={openPostEdit}>
@@ -116,9 +114,6 @@ function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
               name="content"
               multiline
               fullWidth
-              value={postEditContent}
-              onChange={handleChangePostEditContent}
-              postContent={postEditContent}
               sx={{
                 marginBottom: "10px",
                 "& fieldset": {
@@ -129,7 +124,7 @@ function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
               }}
             />
 
-            {post.image ? (
+            {postEditImage ? (
               <Box
                 sx={{
                   borderRadius: 2,
@@ -139,21 +134,54 @@ function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
                   "& img": { objectFit: "cover", width: 1, height: 1 },
                 }}
               >
-                <img src={post.image} alt="post" />
+                <img src={postEditImage} alt="post" />
                 <IconButton
-                  onClick={handleClosePostEdit}
-                  sx={{ position: "absolute", top: 0, right: 0 }}
+                  onClick={handleRemovePostImage}
+                  disableRipple
+                  sx={{
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    backgroundColor: "white",
+                    color: "black",
+                    padding: "4px",
+                  }}
                 >
-                  <CloseIcon sx={{ fontSize: 26 }} />
+                  <CloseIcon sx={{ fontSize: 22 }} />
                 </IconButton>
               </Box>
             ) : (
-              <FUploadImage
-                name="image"
-                accept="image/*"
-                maxSize={3145728}
-                onDrop={handleDrop}
-              />
+              <Box
+                sx={{
+                  borderRadius: 2,
+                  overflow: "hidden",
+                  height: "100%",
+                  position: "relative",
+                }}
+              >
+                <IconButton
+                  onClick={handleRemovePostImage}
+                  disableRipple
+                  sx={{
+                    display: uploadedImage ? "flex" : "none",
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    backgroundColor: "white",
+                    color: "black",
+                    padding: "4px",
+                    zIndex: 2,
+                  }}
+                >
+                  <CloseIcon sx={{ fontSize: 22 }} />
+                </IconButton>
+                <FUploadImage
+                  name="image"
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                />
+              </Box>
             )}
 
             <Box sx={{ marginTop: "14px" }}>
