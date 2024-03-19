@@ -37,7 +37,6 @@ const yupSchema = Yup.object().shape({
 function PostEdit({ post, openPostEdit, handleClosePostEdit }) {
   const [postEditImage, setPostEditImage] = useState(post.image);
   const [uploadedImage, setUploadedImage] = useState("");
-  console.log(40, uploadedImage);
 
   const methods = useForm({
     resolver: yupResolver(yupSchema),
