@@ -71,7 +71,7 @@ function PostCard({ post }) {
         Edit Post
       </MenuItem>
       <PostEdit
-      post={post}
+        post={post}
         openPostEdit={openPostEdit}
         handleClosePostEdit={handleClosePostEdit}
       />
