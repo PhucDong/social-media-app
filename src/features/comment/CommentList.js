@@ -13,6 +13,7 @@ function CommentList({ postId }) {
     totalComments,
     isLoading,
     currentPage,
+    deletedComment,
   } = useSelector(
     (state) => ({
       commentsByPost: state.comment.commentsByPost[postId],
@@ -20,6 +21,7 @@ function CommentList({ postId }) {
       currentPage: state.comment.currentPageByPost[postId],
       commentsById: state.comment.commentsById,
       isLoading: state.comment.isLoading,
+      deletedComment: state.comment.deletedComment,
     }),
     shallowEqual
   );
@@ -31,6 +33,12 @@ function CommentList({ postId }) {
       dispatch(getComments({ postId }));
     }
   }, [dispatch, postId]);
+
+  useEffect(() => {
+    if (deletedComment) {
+      dispatch(getComments({ postId }));
+    }
+  }, [dispatch, deletedComment, postId]);
 
   let renderedComments;
   if (commentsByPost) {
