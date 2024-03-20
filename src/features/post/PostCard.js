@@ -17,22 +17,16 @@ import PostReaction from "./PostReaction";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deletePost } from "./postSlice";
 import PostEdit from "./PostEdit";
+import DeletePostConfirmation from "./DeletePostConfirmation";
 
 function PostCard({ post }) {
   const [anchorPostMenu, setAnchorPostMenu] = useState(null);
   const [openPostEdit, setOpenPostEdit] = useState(false);
-  const dispatch = useDispatch();
+  const [openDelPostConfirm, setOpenDelPostConfirm] = useState(false);
 
   const handlePostMenuClose = () => {
     setAnchorPostMenu(null);
-  };
-
-  const handleDeletePost = (postId) => {
-    setAnchorPostMenu(null);
-    dispatch(deletePost(postId));
   };
 
   const handlePostMenuOpen = (event) => {
@@ -46,6 +40,15 @@ function PostCard({ post }) {
 
   const handleClosePostEdit = () => {
     setOpenPostEdit(false);
+  };
+
+  const handleOpenDelPostConfirm = () => {
+    setOpenDelPostConfirm(true);
+    setAnchorPostMenu(null);
+  };
+
+  const handleCloseDelPostConfirm = () => {
+    setOpenDelPostConfirm(false);
   };
 
   const postOptionsMenu = (
@@ -64,10 +67,7 @@ function PostCard({ post }) {
       open={Boolean(anchorPostMenu)}
       onClose={handlePostMenuClose}
     >
-      <MenuItem
-        onClick={handleOpenPostEdit}
-        sx={{ mx: 1 }}
-      >
+      <MenuItem onClick={handleOpenPostEdit} sx={{ mx: 1 }}>
         Edit Post
       </MenuItem>
       <PostEdit
@@ -76,13 +76,16 @@ function PostCard({ post }) {
         handleClosePostEdit={handleClosePostEdit}
       />
       <MenuItem
-        onClick={() => handleDeletePost(post._id)}
-        to="/"
-        component={RouterLink}
+        onClick={handleOpenDelPostConfirm}
         sx={{ mx: 1 }}
       >
         Delete Post
       </MenuItem>
+      <DeletePostConfirmation
+        post={post}
+        openDelPostConfirm={openDelPostConfirm}
+        handleCloseDelPostConfirm={handleCloseDelPostConfirm}
+      />
     </Menu>
   );
 
