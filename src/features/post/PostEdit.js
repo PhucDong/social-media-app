@@ -19,16 +19,7 @@ import { fDate } from "../../utils/formatTime";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch } from "react-redux";
 import { updatePost } from "./postSlice";
-
-const customStyledCard = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "500px",
-  maxWidth: "540px",
-  backgroundColor: "white",
-};
+import { customStyledCard } from "./customStyledCard";
 
 const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required."),
