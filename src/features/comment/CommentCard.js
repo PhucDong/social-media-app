@@ -12,12 +12,11 @@ import { fDate } from "../../utils/formatTime";
 import CommentReaction from "./CommentReaction";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deleteComment } from "./commentSlice";
+import DeleteCommentConfirmation from "./DeleteCommentConfirmation";
 
 function CommentCard({ comment }) {
   const [anchorCommentMenu, setAnchorCommentMenu] = useState(null);
-  const dispatch = useDispatch();
+  const [openDelCommentConfirm, setOpenDelCommentConfirm] = useState(null);
 
   const handleCommentMenuClose = () => {
     setAnchorCommentMenu(null);
@@ -27,8 +26,12 @@ function CommentCard({ comment }) {
     setAnchorCommentMenu(event.currentTarget);
   };
 
-  const handleDeleteComment = (commentId) => {
-    dispatch(deleteComment(commentId));
+  const handleCloseDelCommentConfirm = () => {
+    setOpenDelCommentConfirm(false);
+  };
+
+  const handleOpenDelCommentConfirm = () => {
+    setOpenDelCommentConfirm(true);
     setAnchorCommentMenu(null);
   };
 
@@ -48,18 +51,23 @@ function CommentCard({ comment }) {
       open={Boolean(anchorCommentMenu)}
       onClose={handleCommentMenuClose}
     >
-      <MenuItem
+      {/* <MenuItem
         sx={{ mx: 1, px: 1, fontSize: "0.9rem", lineHeight: 1.25 }}
         onClick={() => setAnchorCommentMenu(null)}
       >
         Edit Comment
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem
         sx={{ mx: 1, px: 1, fontSize: "0.9rem", lineHeight: 1.25 }}
-        onClick={() => handleDeleteComment(comment._id)}
+        onClick={handleOpenDelCommentConfirm}
       >
         Delete Comment
       </MenuItem>
+      <DeleteCommentConfirmation
+        comment={comment}
+        openDelCommentConfirm={openDelCommentConfirm}
+        handleCloseDelCommentConfirm={handleCloseDelCommentConfirm}
+      />
     </Menu>
   );
 
