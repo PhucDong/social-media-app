@@ -48,6 +48,15 @@ const slice = createSlice({
       state.totalPages = totalPages;
       state.totalUsers = count;
     },
+    getSentFriendRequestsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { users, totalPages, count } = action.payload;
+      users.forEach((user) => (state.usersById[user._id] = user));
+      state.currentPageUsers = users.map((user) => user._id);
+      state.totalPages = totalPages;
+      state.totalUsers = count;
+    },
     sendFriendRequestSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -134,21 +143,44 @@ export const getFriendRequests =
     }
   };
 
-export const sendFriendRequest = (targetUserId) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.post(`/friends/requests`, {
-      to: targetUserId,
-    });
-    dispatch(
-      slice.actions.sendFriendRequestSuccess({ ...response.data, targetUserId })
-    );
-    toast.success("Request sent");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
+export const sendFriendRequest =
+  (currentUserId, targetUserId) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.post(`/friends/requests`, {
+        to: targetUserId,
+      });
+      dispatch(
+        slice.actions.sendFriendRequestSuccess({
+          ...response.data,
+          targetUserId,
+        })
+      );
+      toast.success("Request sent");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const getSentFriendRequests =
+  ({ filterName, page = 1, limit = 12 }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const params = { page, limit };
+      if (filterName) {
+        params.name = filterName;
+      }
+      const response = await apiService.get("/friends/requests/outgoing", {
+        params,
+      });
+      dispatch(slice.actions.getSentFriendRequestsSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export const declineFriendRequest = (targetUserId) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
