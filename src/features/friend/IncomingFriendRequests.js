@@ -13,7 +13,7 @@ import {
 import SearchInput from "../../components/SearchInput";
 import UserCard from "./UserCard";
 
-function FriendRequests() {
+function IncomingFriendRequests() {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = useState(1);
 
@@ -34,7 +34,7 @@ function FriendRequests() {
   return (
     <Container>
       <Typography variant="h4" sx={{ mb: 3 }}>
-        Friend Requests
+        Incoming Friend Requests
       </Typography>
       <Card sx={{ p: 3 }}>
         <Stack spacing={2}>
@@ -74,4 +74,4 @@ function FriendRequests() {
   );
 }
 
-export default FriendRequests;
+export default IncomingFriendRequests;
