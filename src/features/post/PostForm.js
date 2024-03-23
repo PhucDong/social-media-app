@@ -24,13 +24,7 @@ function PostForm() {
     defaultValues,
   });
 
-  const {
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    // formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit, reset, setValue, watch } = methods;
 
   const dispatch = useDispatch();
   const isSubmitting = watch("isSubmitting");
@@ -38,7 +32,6 @@ function PostForm() {
   const onSubmit = (data) => {
     setValue("isSubmitting", true);
     dispatch(createPost(data)).then(() => reset());
-    // console.log(44, data);
   };
 
   const handleDrop = useCallback(
@@ -74,8 +67,6 @@ function PostForm() {
             }}
           />
 
-          {/* <FTextField name="image" placeholder="Image" /> */}
-          {/* <input type="file" ref={fileInput} onChange={handleDrop} /> */}
           <FUploadImage
             name="image"
             accept="image/*"
