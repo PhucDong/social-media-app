@@ -81,6 +81,7 @@ export const createPost =
         image: imageUrl,
       });
       dispatch(slice.actions.createPostSuccess(response.data));
+      toast.success("Post created successfully");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
@@ -144,8 +145,8 @@ export const updatePost =
         content,
         image: imageUrl,
       });
-      console.log(144, response.data);
       dispatch(slice.actions.updatePostSuccess(response.data));
+      toast.success("Update post successfully");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
