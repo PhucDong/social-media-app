@@ -144,7 +144,7 @@ export const getFriendRequests =
   };
 
 export const sendFriendRequest =
-  (currentUserId, targetUserId) => async (dispatch) => {
+  (targetUserId) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const response = await apiService.post(`/friends/requests`, {
