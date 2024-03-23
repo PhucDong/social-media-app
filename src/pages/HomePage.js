@@ -42,27 +42,27 @@ function HomePage() {
   const PROFILE_TABS = [
     {
       value: "profile",
-      icon: <AccountBoxIcon sx={{ fontSize: 24 }} />,
+      icon: <AccountBoxIcon sx={{ fontSize: 20 }} />,
       component: <Profile profile={user} />,
     },
     {
       value: "friends",
-      icon: <PeopleAltIcon sx={{ fontSize: 24 }} />,
+      icon: <PeopleAltIcon sx={{ fontSize: 20 }} />,
       component: <FriendList />,
     },
     {
       value: "sent requests",
-      icon: <SendIcon sx={{ fontSize: 24 }} />,
+      icon: <SendIcon sx={{ fontSize: 20 }} />,
       component: <SentFriendRequests />,
     },
     {
       value: "incoming requests",
-      icon: <ContactMailIcon sx={{ fontSize: 24 }} />,
+      icon: <ContactMailIcon sx={{ fontSize: 20 }} />,
       component: <IncomingFriendRequests />,
     },
     {
       value: "add_friend",
-      icon: <PersonAddRoundedIcon sx={{ fontSize: 24 }} />,
+      icon: <PersonAddRoundedIcon sx={{ fontSize: 20 }} />,
       component: <AddFriend />,
     },
   ];
