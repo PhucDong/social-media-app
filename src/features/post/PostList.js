@@ -16,7 +16,6 @@ function PostList({ userId }) {
     if (userId) {
       dispatch(getPosts({ userId, page }));
     }
-    console.log(21, "Posts are rendered");
   }, [dispatch, userId, page]);
 
   useEffect(() => {
