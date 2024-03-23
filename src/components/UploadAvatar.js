@@ -60,6 +60,9 @@ function UploadAvatar({ error, file, helperText, sx, ...other }) {
   } = useDropzone({
     multiple: false,
     ...other,
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png"],
+    },
   });
 
   return (

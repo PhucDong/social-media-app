@@ -29,6 +29,9 @@ function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
   } = useDropzone({
     multiple: false,
     ...other,
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png"],
+    },
   });
 
   return (
